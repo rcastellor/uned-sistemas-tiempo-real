@@ -5,3 +5,95 @@ software fiables. Aunque se realizan consideraciones sobre la prevención de
 fallos, la atención se dedica principalmente a la tolerancia a fallos. Se
 condirean las técnicas de recuperación de errores hacia adelante y hacia atrás.
 El manejo de excepciones se estudia en el siguiente tema.
+
+Causas que pueden propiciar el fallo de un sistema de tiempo real:
+\begin{enumerate}
+\item Especificación inadecuada.
+\item Defectos provocados por errores de diseño.
+\item Defectos provocados por fallos en componentes del procesador.
+\item Defectos provocados por interferencias transitorias o permanentes en el
+subsistema de comunicaciones.
+\end{enumerate}
+
+Los errores relacionados con el diseño o la especificación son dificiles de
+preveer mientras que los errores provocados por fallos son en cierto modo
+predecibles. Los lenguajes de programación de tiempo real tienen que ser
+altamente fiables.
+
+\subsection{Fiabilidad, fallos y defectos}
+
+Fiabilidad: una medida del éxito con el que el sistema se ajusta a alguna
+especificación definitiva de su comportamiento.
+
+Fallo del sistema: Cuando el comportamiento de un sistema se desvía del
+especificado para él, se dice que es un fallo.
+
+Se pueden distinguir tres tipos de fallos:
+
+\begin{enumerate}
+	\item Fallos transitorios, Un fallo transitorio comienza en un instante
+		de tiempo concreto, se mantiene en el sistema durante algún
+		periodo, y luego desaparece. Ejemplos de este tipo de fallos se
+		dan en componentes hardware en los que se produce una reacción
+		adversa a una interferencia externa, como la producida por un
+		campo eléctrico o por radioactividad. Después de que la
+		perturbación desaparece, lo hace también el fallo (aunque no
+		necesariamente el error inducido). Muchos de los fallos en los
+		sistemas de comunicación son transitorios.
+	\item Fallos permanentes Los fallos permanentes comienzan en un instante
+		determinado y permanecen en el sistema hasta que son reparados;
+		es el caso, por ejemplo, de un cable roto o de un error de
+		diseño de software.
+	\item Fallos intermitentes Son fallos transitorios que ocurren de vez en
+		cuando. Un ejemplo es un componente hardware sensible al calor,
+		que funciona durante un rato, deja de funcionar, se enfría, y
+		entonces comienza a funcionar de nuevo
+\end{enumerate}
+
+\subsection{Modos de fallo}
+
+Se pueden identificar dos dominios generales de modos de fallo:
+
+\begin{enumerate}
+	\item Fallos de valor, el valor asociado con el servicio es erróneo.
+	\item Fallos de tiempo, el servicio se completa a destiempo.
+\end{enumerate}
+
+Las combinaciones de fallos de valor y de tiempo se denominan fallos
+arbitrarios.
+
+Un fallo de valor fuera del rango esperado para el servicio se denomina error de
+límites, son fallos fácilmente reconocibles.
+
+Los fallos en el dominio del tiempo se pueden englobar en:
+
+\begin{enumerate}
+	\item Demasiado pronto, el servicio es entregado antes de lo requerido.
+	\item Demasiado tarde, el servicio se entrega después de lo requerido,
+		se puede hablar de error de prestaciones.
+	\item Infinitamente tarde, el servicio nunca es entregado, fallo de
+		omisión.
+\end{enumerate}
+
+Esta clasificación se puede ampliar con fallos de encargo o improvisación cuando
+el servicio es entregado sin ser esperado.
+
+Dada la clasificación de fallos se puede definir algunas suposiciones respecto
+al modo en que los sistemas pueden fallar:
+
+\begin{enumerate}
+	\item Fallo descontrolado, un sistema que produce fallos arbitrarios
+		tanto en el dominio del valor como del tiempo
+	\item Fallo de retraso, un sistema produce servicios correctos en el
+		dominio del valor pero no en el del tiempo.
+	\item Fallo de silencio, cuando el sistema falla bruscamente sin haber
+		tenido fallos de valor o de tiempo, a partir del fallo todos los
+		servicios subsiguientes también sufren fallos de omisión.
+	\item Fallo de parada, un sistema que cumple los requisitos de un fallo
+		de silencio pero permite que otros sistemas detectan que ha
+		entrado en el estado de fallo
+	\item Fallo controlado, un sistema falla de una forma especificada y
+		controlada.
+	\item Sin fallos, un sistema produce los servicios correctos, tanto en
+		el dominio del valor como del tiempo.
+\end{enumerate}
