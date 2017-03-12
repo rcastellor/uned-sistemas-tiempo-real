@@ -1,0 +1,62 @@
+\section{Ejercicio 1}
+
+Para la programación de las N-versiones (N-versión programming), contestar a las
+siguientes preguntas:
+
+\begin{enumerate}[a)]
+	\item Explicar en que suposición se basa, cuando deja de ser válida y
+		que hay que realizar para que la suposición sea cierta.
+	\item ¿De qué es responsable el proceso director (driver process)?
+	\item ¿Qué se entiende por votación inexacta (inexact voting)? Como se puede
+	 resolver y en que consiste el problema de la comparación consistente
+(consistent comparison problema).
+	\item Enumerar y comentar los tres factores (aspectos= issues) principales del
+éxito de la programación de las N-versiones.
+\end{enumerate}
+
+\subsection{Respuesta a}
+
+La programación de N-versiones se basa en la suposición de que se puede
+especificar de forma consistente y sin ambigüedad el funcionamiento de un
+programa y los programas que se han desarrollado de forma independiente fallaran
+también de forma independiente. Esta suposición deja de ser cierta si se utiliza
+para desarrollar los distintos programas el mismo lenguaje y entorno de
+programación ya que pueden ocurrir fallos relacionados con el mismo que no serán
+independientes.
+
+\subsection{Respuesta b}
+
+El proceso director es el responsable de:
+\begin{itemize}
+	\item Invocar a cada una de las versiones.
+	\item Esperar que las versiones realicen su trabajo.
+	\item Comparar los resultados y actuar basándose en los mismos.
+\end{itemize}
+
+\subsection{Respuesta c}
+
+En los votos que incluyan números reales sera difícil que los resultados de las
+M-versiones sean exactos. Esto podría deberse a temas hardware o a la
+sensibilidad de los algoritmos utilizados. Las técnicas utilizadas para la
+comparación de estos resultados se denominan votación inexacta. El problema de
+la comparación consistente se da cuando una aplicación tiene que realizar una
+comparación basada en un valor finito dado en la especificación, el resultado de
+la comparación determina el curso de la acción.
+
+\subsection{Respuesta d}
+
+\begin{enumerate}[a)]
+	\item Especificación inicial. La gran mayoría de fallos en el software
+		provienen de una especificación errónea. Un error de
+		especificación se manifestará en todas las N-Versiones.
+	\item Independencia del diseño. Cuando una especificación es compleja se
+		producirá una distorsión de la comprensión de los requisitos
+		entre los equipos independientes. Si estos requisitos se
+		refieren a datos poco frecuentes puede ser que estos errores no
+		se capturen en la fase de pruebas.
+	\item Presupuesto adecuado. Un sistema de N-versiones aumentara mucho el
+		presupuesto y supondrá problemas de mantenimiento. Además no
+		esta claro que no se pueda producir un sistema más fiable si
+		todos los recursos para construir las N-versiones son utilizados
+		para desarrollar una única versión.
+\end{enumerate}
