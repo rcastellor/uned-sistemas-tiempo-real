@@ -5,3 +5,17 @@ componentes de software fiables, centrándose este tema en el manejo de las
 excepciones, estudiándose tanto los modelos de terminación como los de
 reanudación.
 
+Los mecanismos de manejo de excepciones tienen que cumplir estos requisitos:
+
+\begin{enumerate}
+	\item El mecanismo debe ser facil de comprender y utilizar.
+	\item El código de manejo de excepciones no debe oscurecer el código
+normal del programa.
+	\item El mecanismo debe diseñarse de forma que no suponga una sobrecarga
+en la ejecución. Solamente sera aceptable cierta pequeña sobrecarga cuando sea
+primordial la rapidez de recuperación al ocurrir una excepción.
+	\item El mecanismo debe permitir un tratamiento uniforme de las
+excepciones tanto por el entorno como por el programa.
+	\item El mecanismo debe permitir la programación de acciones de
+recuperación.
+\end{enumerate}
