@@ -19,3 +19,84 @@ excepciones tanto por el entorno como por el programa.
 	\item El mecanismo debe permitir la programación de acciones de
 recuperación.
 \end{enumerate}
+
+Existen métodos de control de excepciones en lenguajes tipo C implementados con
+valores de retorno inusuales, normalmente distintos de cero. Otro método de
+control de excepciones en este tipo de lenguajes es mediante la bifurcación
+forzada, por ejemplo el uso de goto en C aunque este tipo de control de
+excepciones generan un código más oscuro.
+
+Actualmente en los lenguajes de programación modernos se tiende a incluir
+funcionalidades de manejo de exepciones directamente en el lenguaje, lo que
+provee un mecanismo más estructurado.
+
+Según el retraso en la detección del error las excepciones se provocan de forma
+síncrona o asíncrona, la excepción síncrona se genera como respuesta a un bloque
+de código, la excepción asíncrona se genera un tiempo despues de que ocurra la
+operación que da lugar a la aparición del error.
+
+Existen cuatro tipos de excepciones:
+
+\begin{enumerate}
+	\item Detectada por el entorno y generada síncronamente, por ejemplo una
+		división por cero.
+	\item Detectada por la aplicación y generada síncronamente, por ejemplo
+		un fallo en un aserto.
+	\item Detectada por el entorno y generada asíncronamente, por ejemplo un
+		fallo de alimentación o un mecanismo de monitorización vital.
+	\item Detectada por la aplicación y generada asíncronamente, por ejemplo
+		cuando un proceso verifica una condición que ocasionará que un
+		proceso no cumpla los plazos o no termine correctamente.
+\end{enumerate}
+
+Existen diferentes formas de declarar las excepciones síncronas:
+
+\begin{enumerate}
+	\item Mediante un nombre constante que necesita ser declarado
+		explícitamente.
+	\item Mediante un objeto de cierto tipo que podrá o no ser declarado
+		explícitamente.
+\end{enumerate}
+
+Ada precisa que las excepciones se declaren como constantes, por ejemplo las
+excepciones que puede generar el entorno de ejecución se declaran en el paquete
+Standard.
+
+\begin{lstlistings}[language=ADA]
+package Standard is
+....
+Constraint_Error : exception;
+Program_Error : exception;
+Storage_Error : exception;
+Tasking_Error : exception;
+...
+end Standard
+\end{lstlitings}
+
+Java y C++ dan una visión de las excepciones más orientada al objeto. En java
+las excepciones son instancias de una subclase de la clase Throwable y podran
+ser lanzadas tanto por el sistema de ejecución como por la aplicación. En C++ se
+pueden lanzar excepciones de cualquier tipo de objeto sin declararlas
+previamente.
+
+Se considera que un bloque esta vigilado (guarded) cuando se ha definido un
+manejador de excepciones para el, por ejemplo en Java se considerará vigilado el
+bloque en una estructura try ... catch. Al definir los bloques podemos incurrir
+en un problema de granularidad inadecuada cuando el bloque es demasiado grande y
+no podemos definir en que instrucciones se produce la excepción. Una solución a
+este problema es disminuir el tamaño del bloque y/o anidarlo. Otra alternativa
+es crear procedimientos con manejadores para cada uno de los bloques anidados.
+La mejor aproximación es permitir el paso de parametros junto a las excepciones.
+
+\subsection{Propagación de excepciones}
+
+Cuando no hay un manejador de excepciones en un bloque de código y se produce
+una excepción hay dos formas de proceder:
+
+\begin{itemize}
+	\item Entender la ausencia de manejador como un error de programación y
+		notificarlo en tiempo de compilación.
+	\item La segunda vía es buscar manejadores en el pasado de la cadena de
+		invocación en tiempo de ejecución, esto se conoce como
+		propagación de excepciones.
+\end{itemize}
