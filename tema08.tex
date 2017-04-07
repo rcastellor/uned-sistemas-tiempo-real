@@ -4,3 +4,34 @@ Como continuación del tema anterior, en este tema se tratan los procesos
 competitivos. Un tema importante en este caso es la distinción entre
 sincronización condicional y sincronización evitable en el modelo de
 concurrencia.
+
+
+\subsection{Interbloqueo o bloqueo mutuo}
+
+Tambien conocido como deadlock se trata del bloqueo permanente de un conjunto de
+procesos o hilos de ejecucion que compiten o se comunican entre ellos en un
+sistema concurrente. No existe una solución general para los interbloqueos.
+
+Es posible representar bloqueos mutuos mediante grafos dirigidos, el proceso es
+representado por un cuadrado y el recurso por un circulo. Cuando un proceso
+solicita un recurso se dibuja una flecha dirigida desde el el proceso al
+recurso, cuando el recurso esta asignado a un proceso la flecha esta dirigida
+desde el recurso al proceso.
+
+Existen cuatro condiciones necesarias para que se de un interbloqueo, estas son:
+
+\begin{itemize}
+	\item Condición de exclusión mutua, existe un recurso compartido por los
+procesos al que solo puede acceder un proceso simultaneamente.
+	\item Condición de retención y espera, al menos un proceso P ha
+adquirido un recurso R y lo retiene mientras espera un recurso R2 que ha sido
+asignado a otro proceso.
+	\item Condición de no expropiación, los recursos no pueden ser
+expropiados por otros procesos, tienen que ser liberados por sus propietarios.
+	\item Condición de espera circular, dado un conjunto de proceso P0..PM,
+P0 esta esperando un recurso adquirido por P1, que esta esperando un recurso
+adquirido por P2, ..., que esta esperando un recurso adquirido por PM, que esta
+esperando un recurso adquirido por P0. Esta condición implica la condición de
+retención y espera.
+\end{itemize}
+
