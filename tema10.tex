@@ -4,3 +4,89 @@ Tras el tema anterior de capacidades de tiempo real, hay que incluir estas
 capacidades en la planificación de tareas, introduciéndose también la noción de
 prioridad junto con el análisis de la planificabilidad para sistemas con
 desalojo basado en prioridad.
+
+Vamos a barajar tres modelos de planificación:
+
+\begin{itemize}
+	\item Modelo simple
+	\item Ejecutivo cíclico
+	\item Planificación basada en procesos
+\end{itemize}
+
+\subsection{Modelo simple}
+
+Tenemos un modelo que permite describir algunos esquemas de planificación
+estándar:
+
+\begin{itemize}
+	\item La aplicación está compuesta por un conjunto fijo de procesos
+	\item Los procesos son periódicos, con periodos conocidos
+	\item Los procesos son independientes entre sí
+	\item El instante crítico es cuando todos los procesos son ejecutados a
+		la vez
+	\item Las sobrecargas del sistema, tiempos de cambio de contexto y demás
+		se suponen con coste cero
+	\item Los tiempos límite de los procesos son iguales a sus periodos
+	\item Los procesos tienen tiempo de ejecución constante en el peor caso
+\end{itemize}
+
+Para definir el modelo de proceso simple definimos las siguientes variables:
+
+\begin{tabular}{|c|l|}
+	\hline 
+	Notación & Descripción \\ 
+	\hline 
+	B &  Tiempo de bloqueo del proceso en el peor caso \\ 
+	\hline 
+	C &  Tiempo de ejecución del proceso en el peor caso (WCET) \\ 
+	\hline
+	D &  Tiempo límite del proceso \\
+	\hline
+	I &  Tiempo de interferencia del proceso \\
+	\hline
+	J &  Fluctuación en la ejecución del proceso \\
+	\hline
+	N &  Número de procesos en el sistema \\
+	\hline
+	P &  Prioridad asignada al proceso \\
+	\hline
+	R &  Tiempo de respuesta del proceso en el peor caso \\
+	\hline
+	T &  Tiempo mínimo entre ejecuciones del proceso (periodo) \\
+	\hline
+	Y &  Utilización de cada proceso (C/T) \\
+	\hline
+	a-z &  Nombre del proceso \\
+	\hline
+\end{tabular} 
+
+
+\subsection{Ejecutivo cíclico}
+
+Una forma común de la implementación de sistemas de tiempo real es el uso de un
+ejecutivo cíclico.
+
+Existe una tabla de llamadas a procedimiento con un ciclo principal y ciclos
+secundarios de duración fija.
+
+Las propiedades del ejecutivo cíclico son:
+
+\begin{itemize}
+	\item Los procesos no existen en tiempo de ejecución, solamente existe
+		el proceso principal
+	\item Los procedimientos comparten un espacio de direcciones, pueden
+		compartir datos sin necesidad de protección
+	\item Los periodos deben ser múltiplos del tiempo de ciclo secundario
+\end{itemize}
+
+El ejecutivo cíclico presenta los siguientes inconvenientes:
+
+\begin{itemize}
+	\item Dificultad para incorporar procesos esporádicos
+	\item Dificultad para incorporar procesos con periodos grandes, el
+		tiempo del ciclo mayor es el único que se puede usar sin
+		replanificación
+	\item Dificultad para construir el ejecutivo cíclico
+	\item Procesos con tiempo notable tendrán que ser divididos en
+		procedimientos de tamaño fijo, es propenso a errores
+\end{itemize}
