@@ -21,6 +21,34 @@ acción atómica.
 
 Las acciones atómicas son vistas desde fuera como indivisibles e instantáneas.
 
+Para permitir la descomposición modular de las acciones atomicas se incorpora la
+noción de acciones atómicas anidadas. Los procesos comprometidos en una acción
+anidada deben ser un subconjunto de los que están involucrados en el nivel
+externo de la acción.
+
 \subsection{Acciones atómicas recuperables}
+
+La expresión transacciones atómicas se ha utilizado frecuentemente en el marco
+conceptual de los sistemas operativos y las bases de datos. Una transacción
+atómica tiene todas las propiedades de una acción atómica, más la
+característica adicional de que su ejecución puede tener exito o fallar. Por
+fallo se entiende la ocurrencia de un error del que la transacción no puede
+recuperarse, por ejemplo, un fallo de procesador. Si falla una unidad atómica,
+los componentes del sistema que están siendo manipulados por la acción pueden
+quedar en estado inconsistente. Ante un fallo, una transacción atómica
+garantiza que los componentes son devueltos a su estado original. Las
+transacciones atómicas a veces se conocen como acciones recuperables.
+
+Las dos propiedades distintivas de las transacciones atómicas son:
+
+\begin{itemize}
+	\item Atomicidad de fallo, lo que significa que la transacción debe o
+		bien ser completada con éxito o (en el caso de fallar) no tener
+		efecto.
+	\item Atomicidad de sincronización (o aislamiento), lo que significa
+		que la transacción es indivisible, en el sentido de que su
+		ejecución parcial no puede ser observada por ninguna transacción
+		que se esté ejecutando concurrentemente.
+\end{itemize}
 
 \subsection{Notificación asíncrona}
