@@ -4,3 +4,23 @@ En este tema se amplian las discusiones iniciales sobre tolerancia a fallos
 describiendo con cuánta fiabilidad puede ser programada la cooperación entre
 procesos. Para esta discusión es fundamental la noción de acción atómica y las
 técnicas de manejo de eventos asíncronos.
+
+Los objetivos del tema pasan por:
+
+\subsection{Acciones atómicas}
+
+Una acción es atómica si las tareas que la llevan a cabo no son conscientes de
+las actividades de las primeras, durante el tiempo en el que llevan a cabo la
+acción atómica.
+
+\begin{itemize}
+	\item Sin comunicación con otras tareas
+	\item No detectan cambios de estado externos
+	\item Los cambios de estado internos no se comunican hasta finalizar
+\end{itemize}
+
+Las acciones atómicas son vistas desde fuera como indivisibles e instantáneas.
+
+\subsection{Acciones atómicas recuperables}
+
+\subsection{Notificación asíncrona}
