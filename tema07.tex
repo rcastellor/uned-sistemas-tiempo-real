@@ -52,3 +52,63 @@ Las dos propiedades distintivas de las transacciones atómicas son:
 \end{itemize}
 
 \subsection{Notificación asíncrona}
+
+El requisito fundamental de un mecanismo de notificación asíncrona es permitir
+que un proceso responda rápidamente a una condición que ha sido detectada por
+otro proceso. El énfasis esta en la prontitud de la respuesta, obviamente, un
+proceso siempre puede responder a un evento simplemente sondeando o esperando
+ese evento. La notificación del evento puede construirse sobre el mecanismo de
+comunicación y sincronización de proceso. El proceso, cuando está disponible
+para recibir el evento, simplemente realiza la petición apropiada.
+
+Desafortunadamente, hay ocasiones en las que no es adecuado esperar o sondear la
+ocurrencia de enventos, como en las siguientes:
+
+\begin{itemize}
+	\item \textbf{Recuperacion de errores}
+		
+		Cuando hay grupos de procesos que
+		realizan acciones atómicas, la detección de un error en un
+		proceso necesita de la participación del resto de procesos en la
+		recuperación. Por ejemplo, un fallo hardware puede suponer que
+		el proceso nunca termine su ejecución prevista porque las
+		conjdiciones de comienzo ya no se cumple; el proceso puede que
+		nunca alcance su punto de sondeo. También podría ocurrir un
+		fallo de temporización, por lo que no se podría cumplir el plazo
+		límite de su servicio. En estas situaciones el proceso debe ser
+		informado de que ha sido detectado un error y de que debe
+		efectuar alguna forma de recuperación de error lo más
+		rápidamente posible.
+
+	\item \textbf{Cambios de modo}
+		
+		Los sistemas de tiempo real normalmente tienen
+		distintos modos de operacion. En ocasiones habrá cambios de
+		modo, y estos deben ser gestionados en puntos bien definidos de
+		la ejecución del sistema. Sin embargo, en algunas áreas de
+		aplicación, los cambios de modo pueden ser esperados pero no
+		planificados. En estas situaciones, los procesos deben ser
+		informados de forma rápida y segura de que el modo en el que
+		estaban operando ha cambiado y deben proceder a un conjunto de
+		acciones diferentes.
+
+	\item \textbf{Planificación utilizando computaciones parciales/
+		imprecisas}
+
+		Existen muchos algoritmos en los que la precisión de los
+		resultados depende del tiempo asignado a los cálculos. Por
+		ejemplo, los cálculos numéricos, computaciones estadísticas y
+		búsquedas heurísticas, generan una estimación inicial del
+		resultado requerido, que despues es mejorada con una mayor
+		precisión. En tiempo de ejecución, a cada algoritmo se le asigna
+		una cierta cantidad de tiempo, transcurrido el cual el proceso
+		debe interrumpirse, de forma que se finaliza el mecanismo de
+		refinamiento del resultado.
+
+	\item \textbf{Interrupciones de usuario}
+		
+		En un entorno interactivo general, los
+		usuarios a menudo desean finalizar el procesamiento actual
+		porque han detectado una condición de error y desean comenzar de
+		nuevo.
+\end{itemize}
