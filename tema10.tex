@@ -30,6 +30,10 @@ estándar:
 	\item Los procesos tienen tiempo de ejecución constante en el peor caso
 \end{itemize}
 
+Al considerar que hay independencia entre procesos se puede suponer que en algun
+instante de tiempo todos los procesos son ejecutados a la vez, esto representara
+la carga máxima para el procesador y se conocerá como \textbf{instante crítico}.
+
 Para definir el modelo de proceso simple definimos las siguientes variables:
 
 \begin{tabular}{|c|l|}
@@ -66,6 +70,16 @@ Para definir el modelo de proceso simple definimos las siguientes variables:
 Una forma común de la implementación de sistemas de tiempo real es el uso de un
 ejecutivo cíclico.
 
+
+El ejecutivo cíclico es una tabla de llamadas a procedimientos, donde cada
+procedimiento representa parte del código de un proceso. A la tabla completa se
+le conoce como \textbf{ciclo principal} y habitualmente consta de cierto número
+de \textbf{ciclos secundarios}, cada uno de ellos de duración fija. De esta
+forma, por ejemplo, cuatro ciclos secundarios de 25 ms de duración conforman un
+ciclo principal de 100 ms. Durante la ejecución, una interrupción de reloj cada
+25 ms premite que el planificador realice rondas entre los cuatro ciclos
+secundarios.
+
 Existe una tabla de llamadas a procedimiento con un ciclo principal y ciclos
 secundarios de duración fija.
 
@@ -90,3 +104,28 @@ El ejecutivo cíclico presenta los siguientes inconvenientes:
 	\item Procesos con tiempo notable tendrán que ser divididos en
 		procedimientos de tamaño fijo, es propenso a errores
 \end{itemize}
+
+Si puede construirse un ejecutivo cíclico no será necesario ningún test de
+planificabilidad más. El problema que plantea el ejecutivo cíclico es que a
+partir de cierto tamaño se convierte en irresoluble, para sistemas periódicos
+simples se mantiene como una estrategia de implementación apropiada.
+
+\subsection{Planificación basada en procesos}
+
+Una alternativa al enfoque del ejecutivo cíclico(la ejecución consiste en una
+secuencia de llamadas a procedimientos) es soportar de forma directa la
+ejecución de procesos y determinar cual es el proceso que deberá ejecutarse en
+cada instante de tiempo mediante uno o más atributos de planificación. Un
+proceso está limitado a estar en uno de los posibles estados siguientes:
+
+\begin{itemize}
+	\item Ejecutable
+	\item Suspendido en espera de un evento temporizado (apropiado para
+		procesos periódicos)
+	\item Suspendido en espera de un evento no temporizado (apropiado para
+		procesos esporádicos)
+\end{itemize}
+
+\subsubsection{Alternativas de planificación}
+
+Existe un gran número de aproximaciones distintas a la planificación:
