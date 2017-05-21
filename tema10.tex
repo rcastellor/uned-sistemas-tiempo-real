@@ -129,3 +129,145 @@ proceso está limitado a estar en uno de los posibles estados siguientes:
 \subsubsection{Alternativas de planificación}
 
 Existe un gran número de aproximaciones distintas a la planificación:
+
+\begin{itemize}
+	\item Planificación de prioridad estática o fija: FPS
+	\item Primero el tiempo límite más temprano: EDF
+	\item Planificación basada en el valor: VBS
+\end{itemize}
+
+Respecto a la apropiación de procesos, por derecho preferente existen estas
+opciones:
+
+\begin{itemize}
+	\item Esquema apropiativo, Cambio de procesos inmediato
+	\item Esquema no apropiativo, se esperará a la finalización del proceso
+		de menor prioridad
+	\item Esquema de apropiación diferida o de distribución cooperativa,
+		teimpo limitado para el proceso de menor prioridad
+\end{itemize}
+
+\paragraph{Planificación de prioridad de tasa monotómica}
+
+A cada proceso se le asigna una prioridad en función de su proceso, los procesos
+con menor periodo tienen la mayor prioridad.
+
+\paragraph{Test de planificabilidad basada en la utilización}
+
+El sumatorio de los tiempos de uso de CPU de cada proceso tiene que ser menor
+que el valor de la ecuación del test de planificabilidad, lo cual asegura que
+el conjunto de procesos es planificable, que sea mayor no implica que el
+conjunto de procesos no sea planificable.
+
+El test supone una condición suficiente pero no necesaria.
+
+\begin{equation}\label{key}
+	U=\sum_{i=1}^{N}\frac{C_{i}}{T_{i}}<=N(2^{\frac{1}{N}}-1)
+\end{equation}
+
+N=3 U<=0.78
+
+\paragraph{Test de utilización para EDF}
+
+Primero el proceso con tiempo límite más cercano.
+\begin{itemize}
+	\item Es más simple
+\begin{equation}\label{key}
+	\sum_{i=1}^{N}\frac{C_{i}}{T_{i}}<=1
+\end{equation}
+	\item Es más sencillo de implementar
+	\item Más sencillo incorporar procesos sin tiempos límites en FPS
+	\item Es más fácil trabajar con prioridades (FPS) que con deadlines
+		(EDF)
+	\item FPS es más predecible en situaciones de sobrecargas
+\end{itemize}
+
+
+\subsection{Protocolos de acotación de la prioridad}
+
+Se trata de unos protocolos diseñados para minimizar las situaciones de cadenas
+de bloqueo y eliminar condiciones de fallo.
+
+Existen dos tipos:
+
+\begin{itemize}
+	\item Protocolo original de acotación de la prioridad: OCPP
+	\item Protocolo inmediato de acotación de la prioridad: ICPP
+\end{itemize}
+
+Cuando se utilizan estos protocolos en un sistema monoprocesador se cumplen
+las siguientes propiedades:
+
+\begin{itemize}
+	\item Un proceso de alta prioridad puede ser bloqueado por procesos de
+		prioridad baja en una sola ocasión como máximo.
+	\item Se previenen los bloqueos mutuos
+	\item Se previenen los bloqueos transitivos
+	\item Se aseguran los accesos mutuamente excluyentes a recursos
+\end{itemize}
+
+El procolo asegura que si un recurso está bloqueado por cierto proceso a y esto
+conduce a que se bloquee un proceso de mayor prioridad, b, entonces no se
+permite que ningún otro recurso que pueda bloquear a b sea bloqueado más que por
+a. Un proceso puede ser retardado no sólo mientras esta intentando bloquear un
+recurso previamente bloqueado, sino también cuando ese bloqueo pudiera producir
+un bloqueo múltiple de procesos de mayor prioridad.
+
+\subsubsection{Protocolo original de acotación de la prioridad}
+
+El protocolo original toma la siguiente forma:
+
+\begin{itemize}
+	\item Cada proceso tiene asignada una prioridad estática por defecto
+	\item Cada recurso tiene definido un valor cota estático, que es la 
+		prioridad máxima de los procesos que lo están utilizando
+	\item Un proceso tiene una prioridad dinámica que es el máximo de su
+		prioridad estática y de cualquiera de las que herede debido a
+		bloqueos
+	\item Un proceso sólo puede bloquear un recurso si su prioridad dinámica
+		es mayor que la cota máxima de cualquier recurso actualmente
+		bloqueado (excluyendo los bloqueados por él)
+\end{itemize}
+
+Se permite el bloqueo del primer recurso del sistema. El efecto del protocolo es
+asegurar que el segundo recurso sólo pueda ser bloqueado si no existe un proceso
+de mayor prioridad que utilice ambos recursos. Consecuentemente, la cantidad
+máxima de tiempo que un proceso puede ser bloqueado es igual al tiempo de
+ejecución de la sección crítica más larga en cualquiera de los procesos de menor
+prioridad que son accedidos por procesos de alta prioridad.
+
+\subsubsection{Protocolo inmediato de acotación de la prioridad}
+
+El algoritmo inmediato de acotación de la prioridad (ICPP) toma un enfoque más
+sencillo, y fija la prioridad de un proceso tan pronto bloquea un recurso (en
+lugar de hacerlo cuando realmente bloquea a un proceso de mayor prioridad). El
+protocolo se define como sigue:
+
+\begin{itemize}
+	\item Cada proceso tiene asignada una prioridad por defecto (quizás
+		mediante el esquema monotónico de tiempo límite).
+	\item Cada recurso tiene definido un valor cota estático, que es la
+		prioridad máxima de los procesos que lo utilizan.
+	\item Un proceso tiene una prioridad dinámica, que es el máximo entre su
+		propia prioridad estática y los valores techo de cualquier
+		recurso que tenga bloqueado.
+\end{itemize}
+
+Como consecuencia de esta última regla, un proceso sólo podrá ser bloqueado al
+principi de su ejecución. Una vez que el proceso comience a ejecutarse, todos
+los recursos necesarios debería estar libres, si no lo estuvieran, entonces
+algún proceso tendría una prioridad mayor o igual, y la ejecución del proceso
+deberá ser pospuesta.
+
+Aunque el comportamiento en el peor caso de los dos esquemas de acotación es
+idéntico existen algunas diferencias:
+
+\begin{itemize}
+	\item ICCP es más sencillo de implementar que el original (OCPP), ya que
+		no hay que monitorizar las relaciones de bloqueo.
+	\item ICPP produce menos cambios de contexto, ya que el bloqueo es
+		previo a la primera ejecución.
+	\item ICPP requiere más cambios de prioridad, ya que éstos se producen
+		con todas las utilizaciones de recursos, OCPP modifica la
+		prioridad sólo si se producen bloqueos.
+\end{itemize}
