@@ -1,0 +1,59 @@
+\section{Ejercicio 3}
+
+Sobre los protocolos de acotación de la prioridad (priority ceiling protocols),
+responder a las siguientes cuestiones:
+\begin{enumerate}[a)]
+	\item ¿qué cuestiones abordan los protocolos de acotación de la
+		prioridad¿?
+	\item ¿Qué forma toma el protocolo original de acotación de la prioridad?
+	\item ¿Cómo se define el protocolo inmediato de acotación de la prioridad?
+	\item Aunque el comportamiento en el peor de los casos de los dos 
+		esquemas de acotación es idéntico (desde el punto de vista de la 
+		planificación), existen algunas diferencias, indicar cuales son.
+
+\end{enumerate}
+
+\subsection{Respuesta a}
+
+Los procolos de acotación de prioridad abordan la planificación de procesos
+tratando de minimizar las situaciones de cadenas de bloqueo y eliminar
+condiciones de fallo.
+
+Existen dos tipos de protocolos:
+
+\begin{itemize}
+	\item Protocolo original de acotación de la prioridad
+	\item Protocolo inmediato de acotación de la prioridad
+\end{itemize}
+
+Cuando se utiliza cualquiera de estos dos protocolos en un sistema
+monoprocesador se cumplen lo siguiente:
+
+\begin{itemize}
+	\item Un proceso de alta prioridad puede ser bloqueado por procesos de
+		prioridad baja en una sola ocasión como máximo durante su
+		ejecución
+	\item Se previenen los bloqueos mutuos (interbloqueos)
+	\item Se previenen los bloqueos transitivos
+	\item Se aseguran los accesos mutualmente excluyentes a los recursos.
+\end{itemize}
+
+\subsection{Respuesta b}
+
+\begin{enumerate}
+	\item Cada proceso tiene asignada una prioridad estática por defecto
+	\item Cada recurso tiene definido un valor cota estático, que es la
+		prioridad máxima de los procesos que lo están utilizando.
+	\item Un proceso tiene una prioridad dinámica que es el máximo de su
+		propia prioridad estática y de cualquiera de las que herede
+		debido a que bloquea procesos de mayor prioridad.
+	\item Un proceso sólo puede bloquear un recurso si su prioridad dinámica
+		es mayor que la cota máxima de cualquier recurso actualmente
+		bloqueado (excluyendo cualquiera que él mismo ya pudiera tener
+		bloqueado).
+\end{enumerate}
+
+\subsection{Respuesta c}
+
+\subsection{Respuesta d}
+
