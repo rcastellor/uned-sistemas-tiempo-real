@@ -100,3 +100,18 @@ una excepción hay dos formas de proceder:
 		invocación en tiempo de ejecución, esto se conoce como
 		propagación de excepciones.
 \end{itemize}
+
+\subsection{Modelos}
+
+Existen varios modelos de excepción:
+
+\begin{itemize}
+	\item Modelo de continuación, en el caso de que el invocador sea capaz
+		de manejar la excepción propagada por el proceso invocado, este
+		aplicará las acciones necesarias y continuará con su ejecución.
+	\item Modelo de terminación, cuando el control de la excepción no se
+		devuelve al invocador no existen acciones de manejo que termina
+		la ejecución del proceso.
+	\item Modelos híbridos, el manejador es el que decide si continuar con
+		la ejecución del proceso o terminar la ejecución
+\end{itemize}

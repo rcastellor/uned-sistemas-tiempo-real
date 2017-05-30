@@ -97,3 +97,149 @@ al modo en que los sistemas pueden fallar:
 	\item Sin fallos, un sistema produce los servicios correctos, tanto en
 		el dominio del valor como del tiempo.
 \end{enumerate}
+
+\subsection{Estrategias para sistemas fiables}
+
+Para construir sistemas mas fiables podemos destacar la prevención de fallos
+limitando la introducción de fallos en la construcción del sistema con:
+
+\begin{itemize}
+	\item Mejor hardware e interconexión de los componentes
+	\item Aislar el hardware para la prevención de interferencias
+		ambientales
+	\item Especificación rigurosa del software con métodos de programación
+		orientada a objetos
+	\item Uso de herramientas especializadas del diseño del software
+\end{itemize}
+
+Tambén podemos enfocarnos en la eliminación de fallos aunque a pesar de las
+pruebas realizadas para descubrir fallos nunca podemos demostrar su ausencia,
+las pruebas no pueden ser exhaustivas.
+
+\subsection{Nivel de tolerancia a fallos}
+
+El nivel de tolerancia a fallos lo podemos describir con este esquema:
+
+\begin{itemize}
+	\item Tolerancia total: el sistema continua funcionando después de un
+		fallo por un tiempo limitado, en este tiempo no se afecta ni la
+		funcionalidad ni el rendimiento del sistema.
+	\item Caída suave: el sistema sigue funcionando después de un fallo pero
+		con aspectos de funcionalidad deteriorados
+	\item Fallo seguro: se establece una parada segura que no produce
+		efectos en la tolerancia respecto a otros componentes del
+		sistema
+\end{itemize}
+
+Las técnicas de tolerancia a fallos se basan en la adición al sistema de
+elementos que permiten la recuperación, estos elementos se llaman redundantes en
+el sentido de que su uso no es necesario en caso del funcionamiento normal del
+sistema.
+
+Respecto al hardware existen dos estrategias de tolerancia a fallos:
+
+\begin{itemize}
+	\item Estática (enmascaramiento): módulos redundantes hardware que
+		realizan la misma función, el sistema debe comparar los
+		diferentes resultados para ser capaz de desechar los resultados
+		incorrectos.
+	\item Dinámica, la redundancia se produce dentro del propio componente,
+		el mismo componente informa del error en la salida.
+\end{itemize}
+
+También podemos hablar de tolerancia a fallos en el software:
+
+\begin{itemize}
+	\item Estático, Programación N-versiones, se trata de introducir
+		diferentes componentes software que sean capaces de producir
+		cálculos alternativos de la misma función y proporcionar
+		resultados a comparar para asegurar que están libres de errores.
+
+		Los diferentes modelos deberían ser programados por personas,
+		lenguajes y compiladores diferenes.
+		
+		Los programas son ejecutados por un programa director que los
+		ejecuta concurrentemente y serán comparados por el mismo. Los
+		resultados (votos) deben ser idénticos, si alguno es diferente
+		este resultado será considerado como erróneo.
+
+		Un problema que puede aparecer en los sistemas de medición de
+		valores reales es la precisión de estos valores, necesitaremos
+		entonces técnicas de comparación inexactas.
+
+		El éxito de la programación de N-versiones depende de:
+
+		\begin{itemize}
+			\item Correcta especificación inicial: la especificación
+				del diseño provocará que los diferentes
+				componentes software funcionen de forma
+				correcta.
+			\item Independiencia en el diseño: es importante que se
+				utilicen diferentes personas y herramientas para
+				la implementación de los diferentes componentes.
+			\item Presupuesto adecuado para desarrollar las tres
+				versiones
+		\end{itemize}
+	\item Redundancia dinámica
+
+		El error es informado por el propio módulo, que debe detectarlo.
+		La detección puede ser por el entorno o por la apliación.
+
+		El módulo debe ser capaz de confinar el error y valorar sus
+		daños. El confinamiento consiste en establecer cortafuegos que
+		delimiten el alcance del efecto de los errores. Se pueden
+		realizar por:
+		\begin{itemize}
+			\item descomposición modular: delimita la difusión del
+				error en el módulo.
+			\item Acciones atómica: en caso de error devuelve el
+				sistema a un estado de consistencia
+		\end{itemize}
+
+		Recuperación de errores, hay que tratar de volver al estado de
+		operación normal o de degradación en la funcionalidad. Existen
+		dos tipos de recuperación:
+
+		\begin{itemize}
+			\item Recuperación hacia adelante, se continua con la
+				ejecución del sistema haciendo correcciones
+				selectivas de su estado
+			\item Recuperación de errores hacia atrás, en caso de
+				error el sistema se restaura a un estado seguro
+				previo y se ejecuta desde ese punto - checkpoint
+
+				Una ventaja de la recuperación de errores hacia
+				atrás es que el sistema no necesita localizar el
+				error.
+
+				Como inconvenientes:
+
+				\begin{itemize}
+					\item No se puede recuperar de errores
+						del entorno
+					\item Efecto dominó, se retorna a puntos
+						de recuperación debido a
+						posibles datos incorrectos en la
+						comunicación entre varios
+						procesos.
+					\item El error puede volver a ocurrir,
+						debe ser eliminado en dos
+						etapas: localización y
+						reparación.
+				\end{itemize}
+		\end{itemize}
+	\item Bloques de recuperación
+
+		Se trata de bloques normales de programación con un punto de
+		recuperación al principio y un test de aceptación al final que
+		comprueba que el sistema se encuentra en un estado aceptable al
+		finalizar la ejecución del bloque. Si existe un fallo se
+		restaura el estado de ejecución al inicio del bloque continuando
+		con un procedimiento alternativo. Si todas las alternativas
+		presentan error el bloque mostrará un estado de error.
+
+		Es el test de aceptación el que se encarga de la detección de el
+		error lo que puede suponer una sobrecarga. Por eso se introduce
+		cierto margen de tolerancia para la aceptación.
+\end{itemize}
+
