@@ -1,3 +1,18 @@
+\documentclass[a4paper,10pt]{article}
+
+\usepackage{ucs}
+\usepackage[utf8]{inputenc}
+\usepackage[spanish]{babel}
+\usepackage{fontenc}
+\usepackage{graphicx}
+\usepackage{enumerate}
+\author{Roberto Castellor Morant}
+\title{Ped 1 sistemas en tiempo real}
+\date{\today}
+
+\begin{document}
+\maketitle
+
 \section{Ejercicio 1}
 
 Para la programación de las N-versiones (N-versión programming), contestar a las
@@ -22,7 +37,8 @@ programa y los programas que se han desarrollado de forma independiente fallaran
 también de forma independiente. Esta suposición deja de ser cierta si se utiliza
 para desarrollar los distintos programas el mismo lenguaje y entorno de
 programación ya que pueden ocurrir fallos relacionados con el mismo que no serán
-independientes.
+independientes, por lo tanto en el desarrollo de las distintas versiones del
+programa deberemos usar equipos de trabajo, lenguajes y entornos diferentes.
 
 \subsection{Respuesta b}
 
@@ -36,7 +52,7 @@ El proceso director es el responsable de:
 \subsection{Respuesta c}
 
 En los votos que incluyan números reales sera difícil que los resultados de las
-M-versiones sean exactos. Esto podría deberse a temas hardware o a la
+N-versiones sean exactos. Esto podría deberse a temas hardware o a la
 sensibilidad de los algoritmos utilizados. Las técnicas utilizadas para la
 comparación de estos resultados se denominan votación inexacta. El problema de
 la comparación consistente se da cuando una aplicación tiene que realizar una
@@ -60,3 +76,5 @@ la comparación determina el curso de la acción.
 		todos los recursos para construir las N-versiones son utilizados
 		para desarrollar una única versión.
 \end{enumerate}
+
+\end{document}
