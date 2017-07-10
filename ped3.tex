@@ -7,7 +7,7 @@
 \usepackage{graphicx}
 \usepackage{enumerate}
 \author{Roberto Castellor Morant}
-\title{Ped 2 sistemas en tiempo real}
+\title{Ped 3 sistemas en tiempo real}
 \date{\today}
 
 \begin{document}
@@ -56,6 +56,8 @@ monoprocesador se cumple lo siguiente:
 
 \subsection{Respuesta b}
 
+El protocolo original toma la siguiente forma:
+
 \begin{enumerate}
 	\item Cada proceso tiene asignada una prioridad estática por defecto
 	\item Cada recurso tiene definido un valor cota estático, que es la
@@ -69,8 +71,41 @@ monoprocesador se cumple lo siguiente:
 		bloqueado).
 \end{enumerate}
 
+Se permite el bloqueo del primer recurso del sistema. El efecto del protocolo es
+asegurar que el segundo recurso sólo pueda ser bloqueado si no existe un proceso
+de mayor prioridad que utilice ambos recursos.
+
 \subsection{Respuesta c}
 
+El algoritmo inmediato toma un enfoque más sencillo, fija la prioridad de un
+proceso tan pronto bloquea un recurso, el procolo se define como sigue:
+
+\begin{enumerate}
+	\item Cada proceso tiene asignada una prioridad por defecto
+	\item Cada recurso tiene definido un valor cota estático, que es la
+		prioridad máxima de los procesos que lo utilizan
+	\item Un proceso tiene una prioridad dinámica, que es el máximo entre su
+		propia prioridad estática y los valores techo de cualquier
+		recurso que tenga bloqueado.
+\end{enumerate}
+
+Como consecuencia de esta última regla, un proceso sólo podrá ser bloqueado al
+principio de su ejecución. Una vez comience a ejecutarse, todos los recursos
+necesarios deberían estar libres, si no lo estuvieran algun proceso tendría una
+prioridad mayor o igual y la ejecución del proceso deberá ser pospuesta.
+
 \subsection{Respuesta d}
+
+Existen estas diferencias:
+
+\begin{enumerate}
+	\item ICPP es más sencillo de implementar que el original(OCPP), no hay
+		que monitorizar las relaciones de bloqueo
+	\item ICPP produce menos cambios de contexto, el bloqueo es previo a la
+		primera ejecución
+	\item ICPP requiere más cambios de prioridad, estos se producen con
+		todas las utilizaciones de recursos, OCPP modifica la prioridad
+		solo si se producen bloqueos
+\end{enumerate}
 
 \end{document}
