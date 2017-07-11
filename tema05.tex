@@ -4,3 +4,85 @@ Este tema, junto con el siguiente, se centra en el estudio de la comunicación
 entre tareas. En concreto en este primer tema se escriben los métodos de
 variables compartidas, incluyendo la utilización de semáforos, monitories,
 variables compartidas y objetos protegidos.
+
+
+El comportamiento correcto de un programa concurrente depende estrechamente de
+la sincronización y la comunicación entre procesos. Sincronizar es satisfacer
+las restricciones en el entrelazado de las acciones de diferentes procesos.
+Algunas formas de comunicación requieren sincronización y la sincronización
+puede ser considerada como comunicación sin contenido.
+
+
+La comunicación entre procesos se basa normalmente o en el uso de variables
+compartidas o en el paso de mensajes. Las variables compartidas son objetos a
+los que puede acceder mas de un proceso, la comunicación puede realizarse
+referenciando en cada proceso dichas variables cuando sea apropiado. El paso de
+mensajes implica el intercambio explícito de datos entre dos procesos mediante
+un mensaje que pasa de un proceso a otro siguiendo algún mecanismo. Hay que
+señalar que la elección entre variables compartidas y paso de mensajes deben
+realizarla los diseñadores de los lenguajes o de los sistemas operativos y no
+implica que deba utilizarse un método particular de implementación. Las
+variables compartidas son más fáciles de soportar si hay memoria compartida
+entre procesos, pero pueden ser utilizadas incluso si el hardware incorpora un
+medio de comunicación. Este tema se centrará en las primitivas de sincronización
+y comunicación basadas en memoria compartida. En particular se verán los
+conceptos de espera ocupada, semáforos, regiones criticas condicionales,
+monitores, tipos protegidos y métodos sincronizados.
+
+
+Una secuencia de sentencias que deben aparecer como ejecutada indivisiblemente
+se denomina \emph{sección crítica}. La sincronización que se precisa para
+proteger una sección crítica se conoce como \emph{exclusión mutua}. La exclusión
+mutua no es la única sincronización importante. La sincronización condicionada,
+o de condición, es otro requisito significativo, y es necesaria cuando un
+proceso desea realizar una operación que sólo puede ser realizada adecuadamente,
+o de forma segura, si otro proceso ha realizado alguna acción o está en algún
+estado definido.
+
+\subsection{Espera ocupada}
+
+Una forma de implementar la sincronización es comprobar las variables
+compartidas que actuan como indicadores en un conjunto de procesos. Esta
+aproximación sirve razonablemente bien para implementar sincronización de
+condición, pero no hay un método simple para la exclusión mutua. Para indicar
+una condición, un proceso activa el valor de un indicador; para esperar por esta
+condición, otro proceso comprueba este indicador y sólo continúa cuando se lee
+el valor apropiado:
+
+\begin{lstlisting}
+process P1; (* proceso esperando *)
+	...
+	while indicador = abajo do
+		null
+	end;
+	...
+end P1;
+
+process P2; (* proceso indicando *)
+	...
+	indicador := arriba;
+	...
+end P2;
+\end{lstlisting}
+
+Si la condición no es aún correcta, P1 no tiene elección y deberá continuar en
+el bucle para volver a comprobar el indicador. Esto se conoce como \emph{espera
+ocupada}, y también como \emph{giro} -y a los indicadores como \emph{cerrojos de
+giro} (spin locks)-.
+
+Los algoritmos de espera presentan algunas dificultades que pueden resumirse
+como:
+
+\begin{iterate}
+\item Los protocolos de espera ocupada son difíciles de diseñar y comprender, y
+	es complicado probar su corrección.
+\item Los programas de prueba pueden ignorar entrelazamientos raros que rompen
+	la exclusión mutua o llevan a un interbloqueo activo.
+\item Los bucles de espera ocupada son ineficientes.
+\item Una tarea no fiable que utilice falsamente las variables compartidas,
+	corromperá el sistema completo
+\end{iterate}
+
+Ningún lenguaje de programación concurrente se basa completamente en espera
+ocupada y variables compartidas, hay otros métodos y primitivas, los semáforos y
+monitores se describen en las siguientes secciones.
