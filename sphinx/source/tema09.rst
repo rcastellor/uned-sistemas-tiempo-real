@@ -1,0 +1,10 @@
+Capacidades de tiempo real
+==========================
+
+Los requisitos temporales constituyen la característica diferenciadora de los
+sistemas de tiempo real. En este tema se presenta una visión de estos requisitos
+y de las funcionalidades del lenguaje y estrategias de implemntación que se
+utilizan para satisfacerlos. Los sistemas de tiempo real estrictos tienen
+restricciones de tiempo que deben ser satisfechas, los sistemas no estrictos
+fallan a veces a la hora de cumplir dichas restricciones adecuadamente. Los dos
+casos se consideran en el contexto de la planificación con tiempos límite.
