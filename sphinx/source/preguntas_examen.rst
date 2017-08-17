@@ -68,3 +68,113 @@ precisas en el sentido de que, cuando se ejecuta un manejador de interrupción:
 Si una interrupción no es precisa, se supone que la recuperación es transparente
 al software manejo de la interrupción.
 
+*Explique como se puede transformar un sistema de forma que todos los fallos de
+temporización se manfiesten como fallos de valor. ¿Se puede conseguir tal
+conversión?*
+
+Un fallo de temporización se define como la entrega de un servicio fuera de su
+intervalo de administración definido, por lo general más alla de una fecha
+límite definida. A menudo el servicio se entrega tarde debido al tiempo
+necesario para construir el valor correcto para el servicio. Si el sistema se
+diseño para siempre entregar un valor en el intervalo correcto, entonces la
+falta de tiempo se manifestaría como un valor incorrecto. De ahí que los fallos
+de sincronización y el valor no pueden ser considerados ortogonales.
+
+Lo contrario de lo anterior también puede ser cierto. Un servicio que ha
+fracasado porque el valor que ofrece es incorrecto, puede ser capaz de entregar
+un valor correcto si se administra más CPU de tiempo; por lo tanto, un valor
+correcto puede ser entregado pero demasiado tarde. Sin embargo, esto no es una
+verdad universal, un fallo de valor (o error) puede ser debido a muchas razones
+distintas de insuficiente asignación de ciclos de procesador.
+
+*En la cara de una hoja comente los conceptos de potencia expresiva y facilidad
+de uso de las primitivas de sincronización para control de recursos.*
+
+Bloom ha sugerido criterios para evaluar primitivas de sincronización en el
+contexto de la gestión de recursos. Este análisis forma la base de esta sección,
+donde se consideran la potencia expresiva y la facilidad de uso de las
+primitivas de sincronización para control de recursos. Las primitivas a evaluar
+son monitores/métodos sincronizados (con su uso de sincronización de condición),
+servidores (con una interfaz de paso de mensajes) y recursos protegidos
+(implementados como objetos protegidos). Los dos últimos utilizan guardas para
+la sincronización y por ello un aspecto de este análisis es una comparación
+entre sincronización de condición y sincronización de evitación.
+
+La expresión **potencia expresiva** se utiliza para indicar la capacidad de un
+lenguaje para expresar las restricciones de sincronización requeridas. La
+**facilidad de uso** de una primitiva de sincronización abarca:
+
+* La facilidad con la que expresa cada una de esas restricciones de
+  sincronización.
+* La facilidad con la que se permite combinar las restricciones para conseguir
+  esquemas de sincronización más complejos.
+
+En el contexto del control de recursos, la información necesaria para expresar
+estas restricciones se puede clasificar como sigue:
+
+* Tipo de petición de servicio.
+* Orden en el que llegan las solicitudes.
+* Estado del servidor y de todos los objetos que gestiona.
+* Parámetros de una solicitud.
+
+El conjunto original de restricciones incluía la **historia del objeto** (esto
+es, la secuencia de todas las solicitudes previas). Aquí se supone que el estado
+del objeto se puede extender para incluir la información histórica. Además, se
+añade a la lista:
+
+* La prioridad del cliente
+
+Se considera la prioridad como medida de la importancia del proceso.
+
+Hay en general dos aproximaciones lingüisticas a la restricción del acceso para
+un servicio. La primera es la espera condicional, se aceptan todas las
+solicitudes pero cualquier proceso cuya solicitud no se puede atender se
+suspende en una cola. El monitor convencional tipifica esta aproximación: un
+proceso cuya solicitud no se puede atender es encolado en una variable de
+condición y reanudado cuando se puede atender la solicitud. La segunda
+aproximación es evitación: las solicitudes no se aceptan a menos que puedan ser
+satisfechas. Las condiciones bajo las que se puede aceptar una solicitud de
+forma segura se expresan como una guarda en una acción de aceptación.
+
+*La efectividad de cualquier sistema tolerante a fallos depende de la
+efectividad de sus técnicas de detección de errores. Describa las dos clases de
+técnicas de detección de errores.*
+
+* **DETECCIÓN EN EL ENTORNO:** Los errores se detectan en el entorno en el cual
+  se ejecuta el programa. Se incluye aquellos detectados por el hardware, como
+  los de *ejecución de instrucción ilegal*, *desbordamiento aritmético*, o
+  *violación de protección*. También son considerados los errores detectados en
+  tiempo de ejecución por el sistema soporte del lenguaje de programación de
+  tiempo real; por ejemplo, los de *error en los límites del array*, *referencia
+  a apuntador nulo*, o *valor fuera de rango*.
+* **DETECCIÓN EN LA APLICACIÓN:** Los errores se detectan por la aplicación
+  misma. La mayoría de las técnicas que se pueden utilizar en la aplicación
+  corresponden a alguna de las siguientes categorías:
+  
+  * Comprobación de réplicas. Se ha demostrado que la programación de
+    N-Versiones puede ser utilizada para tolerar fallos software, y también como
+    técnica para la detección de errores (utilizando una redundancia de
+    2-Versiones)
+  * Comprobaciones temporales. Existen dos tipos de comprobaciones temporales.
+    El primer tipo implica un proceso temporizador guardián, que sino es puesto
+    a cero por un cierto componente dentro de un cierto periodo de tiempo, se
+    supone que dicho componente esta en un estado de error. En los sistemas
+    embebidos, donde los tiempos de respuesta son importantes, se necesita un
+    segundo tipo de comprobación. De esta manera se detectan fallos asociados
+    con el incumplimiento de tiempos límite.
+  * Comprobaciones inversas. Estas son posibles en componentes donde exista una
+    relación uno a uno entre la entrada y la salida.
+  * Códigos de comprobación. Los códigos de comprobación se utilizan para
+    comprobar la corrupción de los datos.
+  * Comprobaciones de racionalidad. Se basan en el conocimiento del diseño y de
+    la construcción del sistema. Comprueban que el estado de los datos o el
+    valor de un objeto es razonable basandose en su supuesto uso.
+  * Comprobaciones estructurales. Las comprobaciones estructurales son
+    utilizadas para comprobar la integridad de los objetos de datos tales como
+    listas o colas. Podrían consistir en contar el número de elementos en el
+    objeto, en apuntadores redudantes o en información extra sobre su estatus.
+  * Comprobaciones de racionalidad dinámica. En la salida producida por algunos
+    controladores digitales, habitualmente existe una relación entre
+    cualesquiera dos salidas consecutivas. Por lo tanto, se podrá detectar un
+    error si el valor de una salida nueva difiere considerablemente del valor de
+    la salida anterior.
