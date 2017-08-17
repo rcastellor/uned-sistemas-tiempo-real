@@ -1,6 +1,9 @@
 Preguntas de examenes
 =====================
 
+Mecanismos cambio de contexto
+-----------------------------
+
 *Entre los mecanismos necesarios para permitir la entrada y salida dirigidas por
 interrupciones están los mecanismos de cambio de contexto. En el espacio de una
 cara comente estos mecanismos de cambio de contexto.*
@@ -68,6 +71,9 @@ precisas en el sentido de que, cuando se ejecuta un manejador de interrupción:
 Si una interrupción no es precisa, se supone que la recuperación es transparente
 al software manejo de la interrupción.
 
+Fallos de temporización y valor
+-------------------------------
+
 *Explique como se puede transformar un sistema de forma que todos los fallos de
 temporización se manfiesten como fallos de valor. ¿Se puede conseguir tal
 conversión?*
@@ -86,6 +92,9 @@ un valor correcto si se administra más CPU de tiempo; por lo tanto, un valor
 correcto puede ser entregado pero demasiado tarde. Sin embargo, esto no es una
 verdad universal, un fallo de valor (o error) puede ser debido a muchas razones
 distintas de insuficiente asignación de ciclos de procesador.
+
+Primitivas de sincronización
+----------------------------
 
 *En la cara de una hoja comente los conceptos de potencia expresiva y facilidad
 de uso de las primitivas de sincronización para control de recursos.*
@@ -135,6 +144,9 @@ condición y reanudado cuando se puede atender la solicitud. La segunda
 aproximación es evitación: las solicitudes no se aceptan a menos que puedan ser
 satisfechas. Las condiciones bajo las que se puede aceptar una solicitud de
 forma segura se expresan como una guarda en una acción de aceptación.
+
+Tecnicas de detección de errores
+--------------------------------
 
 *La efectividad de cualquier sistema tolerante a fallos depende de la
 efectividad de sus técnicas de detección de errores. Describa las dos clases de
