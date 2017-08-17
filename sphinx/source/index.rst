@@ -23,7 +23,7 @@ UNED - Sistemas en tiempo real
    tema11
 
    ejercicios
-   preguntas_examenes
+   preguntas_examen
 
 Indices y tablas
 ==================
