@@ -190,3 +190,62 @@ técnicas de detección de errores.*
     cualesquiera dos salidas consecutivas. Por lo tanto, se podrá detectar un
     error si el valor de una salida nueva difiere considerablemente del valor de
     la salida anterior.
+
+Protocolos de acotación de prioridad
+------------------------------------
+
+Sobre los protocolos de acotación de prioridad (priority ceiling protocols),
+responder a las siguientes cuestiones:
+
+a) ¿Qué cuestiones abordan los protocolos de acotación de la prioridad?
+b) ¿Qué forma toma el protocolo original de acotación de la prioridad?
+c) ¿Cómo se define el protocolo inmediato de acotación de la prioridad?
+d) Aunque el comportamiento en el peor de los casos de los dos esquemas de
+   acotación es idéntico (desde el punto de vista de la planificación), existen
+   diferencias, indicar cuales son.
+
+Respuesta.
+
+a) Aunque el protocolo estándar de herencia da un límite superior para el número
+   de bloqueos con los que se puede encontrar un proceso de prioridad alta, este
+   límite puede todavía conducir a un cálculo del peor caso inaceptablemente
+   pesismista. Esto se debe a la posibilidad de desarrollar cadenas de bloqueos
+   (bloqueos transitivos), es decir, situaciones en las que el prceso c es
+   bloqueado por el proceso b, el cual está bloqueado por el proceso a, y así
+   sucesivamente. Como los datos compartidos son un recurso del sistema, desde
+   el punto de vista del gestor de recursos no sólo se debe minimizar el
+   bloqueo, sino que las condiciones de fallo (como los interbloqueos) deben ser
+   eliminadas. Los protocolos de acotación de la prioridad abordan todas estas
+   cuestiones. Consideramos dos de ellos:
+
+   - Protocolo original de acotación de la prioridad.
+   - Protocolo inmediato de acotación de la prioridad
+   
+   Cuando se utiliza cualquiera de estos protocolos en un sistema
+   monoprocesador:
+
+   - Un proceso de alta prioridad puede ser bloqueado por procesos de prioridad
+     baja en una sola ocasión como máximo durante su ejecución.
+   - Se previenen los bloqueos mutuos (interbloqueos).
+   - Se previenen los bloqueos transitivos.
+   - Se aseguran (por el protocolo mismo) los accesos mutuamente excluyentes a
+     los recursos.
+   
+   La mejor manera de describir los protocolos de acotacióon de la prioridad es
+   en relación con los recursos protegidos por secciones críticas. En esencia,
+   el protocolo asegura que si un recurso esta bloqueado por cierto proceso a, y
+   esto conduce a que se bloquee un proceso de mayor prioridad b, entonces no se
+   permite que ningún otro recurso que pueda bloquear a b sea bloqueado más que
+   por un a. Un proceso, por lo tanto, puede ser retardado no sólo mientras está
+   intentando bloquear un recurso previamente bloqueado, sino también cuando ese
+   bloqueo pudiera producir un bloqueo múltiple de procesos de mayor prioridad.
+
+b) El procotolo original toma la siguiente forma:
+   
+   1. Cada proceso tiene asignada una prioridad estática por defecto (quizás
+      según el esquema monotónico de tiempo límite).
+   2. Cada recurso tiene definido un valor cota estático, que es la prioridad
+      máxima de los procesos que lo estan utilizando.
+   3. Un proceso tiene una prioridad dinámica que es el máximo de su prioridad
+      estática y de cualquiera de las que herede debido a que bloquea procesos de
+      mayor prioridad.
