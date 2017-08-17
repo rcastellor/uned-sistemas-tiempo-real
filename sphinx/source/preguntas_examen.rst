@@ -194,8 +194,8 @@ técnicas de detección de errores.*
 Protocolos de acotación de prioridad
 ------------------------------------
 
-Sobre los protocolos de acotación de prioridad (priority ceiling protocols),
-responder a las siguientes cuestiones:
+*Sobre los protocolos de acotación de prioridad (priority ceiling protocols),
+responder a las siguientes cuestiones:*
 
 a) ¿Qué cuestiones abordan los protocolos de acotación de la prioridad?
 b) ¿Qué forma toma el protocolo original de acotación de la prioridad?
@@ -204,7 +204,6 @@ d) Aunque el comportamiento en el peor de los casos de los dos esquemas de
    acotación es idéntico (desde el punto de vista de la planificación), existen
    diferencias, indicar cuales son.
 
-Respuesta.
 
 a) Aunque el protocolo estándar de herencia da un límite superior para el número
    de bloqueos con los que se puede encontrar un proceso de prioridad alta, este
@@ -218,17 +217,17 @@ a) Aunque el protocolo estándar de herencia da un límite superior para el núm
    eliminadas. Los protocolos de acotación de la prioridad abordan todas estas
    cuestiones. Consideramos dos de ellos:
 
-   - Protocolo original de acotación de la prioridad.
-   - Protocolo inmediato de acotación de la prioridad
+   * Protocolo original de acotación de la prioridad.
+   * Protocolo inmediato de acotación de la prioridad
    
    Cuando se utiliza cualquiera de estos protocolos en un sistema
    monoprocesador:
 
-   - Un proceso de alta prioridad puede ser bloqueado por procesos de prioridad
+   * Un proceso de alta prioridad puede ser bloqueado por procesos de prioridad
      baja en una sola ocasión como máximo durante su ejecución.
-   - Se previenen los bloqueos mutuos (interbloqueos).
-   - Se previenen los bloqueos transitivos.
-   - Se aseguran (por el protocolo mismo) los accesos mutuamente excluyentes a
+   * Se previenen los bloqueos mutuos (interbloqueos).
+   * Se previenen los bloqueos transitivos.
+   * Se aseguran (por el protocolo mismo) los accesos mutuamente excluyentes a
      los recursos.
    
    La mejor manera de describir los protocolos de acotacióon de la prioridad es
