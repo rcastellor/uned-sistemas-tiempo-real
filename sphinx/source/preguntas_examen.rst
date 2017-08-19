@@ -191,6 +191,80 @@ técnicas de detección de errores.*
     error si el valor de una salida nueva difiere considerablemente del valor de
     la salida anterior.
 
+Acciones atómicas
+-----------------
+
+*Distinguir entre una acción atómica y una transacción atómica, ¿Cuál es la
+relación entre una transacción atómica y una conversación?*
+
+La expresión transacciones atómicas se ha utilizado frecuentemente en el marco
+conceptual de los sistemas operativos y las bases de datos. Una transacción
+atómica tiene todas las propiedades de una acción atómica, más la característica
+adicional de que su ejecución puede tener éxito o fallar (no éxito). Por fallo
+se entienede la ocurrencia de un error del que la transacción no puede
+recuperarse, por ejemplo, un fallo de procesador. Si falla una acción atómica,
+los componentes del sistema que están siendo manipulados por la acción pueden
+terminar en un estado inconsistente.
+
+Ante un fallo una transacción atómica garantiza que los componentes son
+devueltos a su estado original, esto es, al estado en el que estaban antes de
+comenzar la transacción, las transacciones atómicas a veces se conocen coon el
+nombre de acciones recuperables, aunque desafortunadamente, se tiende a
+confundir los términos acción atómica y transacción atómica.
+
+Las dos propiedades distintivas de las transacciones atómicas son:
+
+* Atomicidad de fallos, lo que significa que la transacción debe o bien ser
+  completada con éxito, o (en el caso de fallar) no tener efecto.
+* Atomicidad de sincronización, o aislamiento, lo que significa que la
+  transacción es indivisible, en el sentido de que su ejecución parcial no puede
+  ser observada por ninguna transacción que se esté ejecutando concurrentemente.
+
+A pesar de que las transacciones atómicas son útiles para las aplicaciones que
+implican la manipulacióon de bases de datos, no son adecuadas para la
+programación de sistemas tolerantes a falloes per se. Esto se debe a que
+precisan de algún tipo de mecanismo de recuperación proporcionado por el
+sistema. Este mecanismo viene preestablecido, sin que el programador tenga
+control sobre su operativa. A pesar de que las transacciones atómicas
+proporcionan una forma de recuperación de errores hacia atrás, no permiten la
+escritura de procedimientos de recuperación. Independientemente de lo anterior,
+las transacciones atómicas tienen su sitio en la protección de la integridad en
+los sistemas de bases de datos de tiempo real.
+
+(No esta bien contestada)
+
+Manejo de excepciones
+---------------------
+
+*En los mecanismos de manejo de excepciones, si el manejador resolviera el
+problema que causó la generación de la excepción, sería posible que reanudara su
+trabajo. Esto se conoce como modelo de reanudación, describa como funciona dicho
+modelo*
+
+Para ilustrar el modelo de reanudación, considere tres procedimientos (P, Q y
+R). El procedimiento P invoca Q, que a su vez invoca R. El procedimiento R
+genera una excepción (r) que es manejada por Q, asumiendo que no hay un
+manejador local en R. El manejador para (r) es Hr, mientras maneja (r), Hr
+genera la excepción q que es manejada por Hq en el procedimiento P. Una vez
+manejada q, Hr continua su ejecución, y despues continua R.
+
+El modelo de reanudación se entiende mucho mejor si contemplamos el manejador
+como un procedimiento que se invoca implícitamente al generar la excepción.
+
+El problema de esta aproximación es la dificultad a la hora de reparar errores
+generados por el entorno de ejecución. Por ejemplo, un desbordamiento aritmético
+en medio de una secuencia compleja de expresiones podría ocasionar que varios de
+los registros contuvieran evaluaciones parciales. Al llamar al manejador, es
+probable que se sobreescriban dichos registros.
+
+Tanto el lenguaje Perl como el lenguaje Mesa proporcionan un mecanismo que
+permite al manejador volver al contexto donde se genero la excepción. Ambos
+lenguajes soportan también el modelo de terminación.
+
+Cuando realmente se nota la ventaja del modelo de reanudación es cuando la
+excepción ha sido generada asincronamente y por lo tanto tiene poco que ver con
+la ejecución actual del proceso.
+
 Protocolos de acotación de prioridad
 ------------------------------------
 
