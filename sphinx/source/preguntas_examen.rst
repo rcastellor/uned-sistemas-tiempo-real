@@ -265,6 +265,37 @@ Cuando realmente se nota la ventaja del modelo de reanudación es cuando la
 excepción ha sido generada asincronamente y por lo tanto tiene poco que ver con
 la ejecución actual del proceso.
 
+Interbloqueos
+-------------
+
+*Estudie si este sistema se encuentra en una situación de interbloqueo, y
+explique sus razones.*
+
+Considérese un sistema que tiene cinco recursos (P1, P2, P3, P4, P5) y siete
+recursos (R1, R2, R3, R4, R5, R6, R7). Hay una instancia de los recursos 2, 5
+y 7, y dos instancias de los recursos 1, 3, 4 y 6. El proceso 1 tiene asignada
+una instancia de R1 y requiere una de R7.  El proceso 2 tiene asignadas una
+instancia de R1, R2 y R3 y requiere una de R5. El proceso 3 tiene asignada una
+instancia de R3 y R4 y requiere una de R1. El proceso 4 tiene asignada R4 y R5
+y requiere una de R2. El proceso 5 tiene una de R7.
+
+Para que el proceso se encuentre en una situación de interbloqueo debe cumplir
+cuatro condiciones:
+
+* *Condición* de exclusión mutua, existe un recurso compartido por los procesos
+  al que solo puede acceder un proceso simultaneamente, los recursos 2, 5 y 7
+  cumplen esta condición.
+* *Condición de retención y espera*, al menos un proceso P ha adquirido un
+  recurso R y lo retiene mientras espera un recurso R2 que ha sido asignado a
+  otro proceso. El proceso 4 tiene adquirido el recurso R5 mientras espera el
+  recurso R2 que esta bloqueado por el proceso 2
+* *Condición de no expropiación*, los recursos no pueden ser expropiados por
+  otros procesos, tienen que ser liberados por sus propietarios.
+* *Condición de espera circular*, el proceso P2 tiene bloqueada la unica
+  instancia del recurso R2, requiere a su vez la instancia del recurso R5 que
+  esta bloqueado por el proceso 4 que a su vez requiere el recurso R2 por lo
+  que se produce una situación de retención y espera.
+
 Protocolos de acotación de prioridad
 ------------------------------------
 
@@ -320,5 +351,5 @@ b) El procotolo original toma la siguiente forma:
    2. Cada recurso tiene definido un valor cota estático, que es la prioridad
       máxima de los procesos que lo estan utilizando.
    3. Un proceso tiene una prioridad dinámica que es el máximo de su prioridad
-      estática y de cualquiera de las que herede debido a que bloquea procesos de
-      mayor prioridad.
+      estática y de cualquiera de las que herede debido a que bloquea procesos
+      de mayor prioridad.
