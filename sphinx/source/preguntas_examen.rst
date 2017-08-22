@@ -353,3 +353,125 @@ b) El procotolo original toma la siguiente forma:
    3. Un proceso tiene una prioridad dinámica que es el máximo de su prioridad
       estática y de cualquiera de las que herede debido a que bloquea procesos
       de mayor prioridad.
+
+   Se permite el bloqueo del primer recurso del sistema. El efecto del protocolo
+   es asegurar que el segundo recurso solo pueda ser bloqueado si no existe un
+   proceso de mayor prioridad que utilice ambos recursos.
+
+c) El algoritmo inmediato toma un enfoque más sencillo, fija la prioridad de un
+   proceso tan pronto bloquea un recurso, el protocolo se define como sigue:
+
+   1. Cada proceso tiene asignada una prioridad por defecto.
+   2. Cada recurso tiene definido un valor cota estático, que es la prioridad
+      máxima de los procesos que lo utilizan.
+   3. Un proceso tiene una prioridad dinámica, que es el máximo entre su propia
+      prioridad estática y los valores techo de cualquier recurso que tenga
+      bloqueado.
+
+   Como consecuencia de esta última regla, un proceso sólo podrá ser bloqueado
+   al principio de su ejecución. Una vez comience a ejecutarse, todos los
+   recursos necesarios debería estar libres, si no lo estuvieran algun proceso
+   tendría una prioridad mayor o igual y la ejecución del proceso deberá ser
+   pospuesta.
+
+d) Existen estas diferencias:
+
+   1. ICPP es más sencillo de implementar que el original(OCPP), no hay que
+      monitorizar las relaciones de bloqueo.
+   2. ICPP produce menos cambios de contexto, el bloqueo es previo a la primera
+      ejecución.
+   3. ICPP requiere más cambios de prioridad, estos se producen con todas las
+      utilizaciones de recursos, OCPP modifica la prioridad sólo si se
+      producen bloqueos.
+
+Semántica del reencolado
+------------------------
+
+El concepto que está detrás del reencolado es el de mover la tarea (que estaba
+tras una guardia o barrera) detrás de otra guarda. Considérese una persona
+esperando para entrar en una habitación. Una vez dentro, la persona puede ser
+arrojada (reencolada) de la habitación y ser colocada de nuevo detrás de una
+puerta(potencialmente cerrada).
+
+Ada permite reencolados entre entradas de tarea y entradas de objetos
+protegidos. Un reencolado puede ser para un mismo entry, para otro entry de la
+misma unidad, o para otra unidad. Se permiten los reencolados de entradas de
+tarea(y viceversa). Sin embargo, el principal uso del reencolado es enviar la
+tarea invocadora a un entry diferente de la misma unidad en la que se ejecuto el
+reencolado.
+
+Semántica: Es importante apreciar que reencolado no es una simple llamada. Si el
+procedimiento P llama al procedimiento Q, entonces, una vez que Q ha finalizado,
+el control se pasa de nuevo a P. Pero si el entry X reencola en la entry y, el
+control no se pasa de nuevo a X. Una vez que se ha completado Y, el control pasa
+de nuevo al objeto que llamo a X. Por tanto, cuando un cuerpo entry o accept
+ejecuta un reencolado, ese cuerpo se completa.
+
+Una consecuencia de esto es que, cuando se realiza un reencolado desde un objeto
+protegido a otro, entonces la exclusión mutua sobre el objeto original se
+abandona una vez que se ha encolado la tarea. Otras tareas que esperan para
+entrar en el primer objeto serán capaces de hacerlo. Sin embargo, un reencolado
+sobre el mismo objeto protegido mantendrá el bloqueo de exlcusión mutua (si el
+entry objetivo esta abierto).
+
+Ejecución concurrente de procesos
+---------------------------------
+
+*Describa los tres mecanismos básicos de representación de la ejecución
+concurrente de procesos(Task representation concurrent exception).*
+
+Hay tres mecanismos básicos para representar la ejecución concurrente: fork y
+join, cobegin y la declaración explícita de procesos. A veces se incluyen
+también las corrutinas como mecanismo para expresar la ejecución concurrente.
+
+La instrucción fork(bifurca) indica que cierta rutina deberá comenzar a
+ejecutarse concurrentemente con quien ha invocado el fork. La instrucción
+join(reúne) permite al que invoca detenerse y por ende sincronizarse hasta la
+terminación de la rutina invocada.
+
+Cobegin(o parbegin, o par) es una forma estructurada de denotar la ejecución
+concurrente de un conjunto de instrucciones. La instrucción cobegin termina
+cuando han terminado todas las instrucciones concurrentes. Cada instrucción S
+puede ser cualquiera de las construcciones permitidas en el lenguaje, incluyendo
+las asignaciones sencillas o las llamadas a procedimientos. De invocar algún
+procedimiento, podrán pasarse datos a los procesos invocados mediante los
+parámetros de la llamada. La instrucción cobegin podría incluir, a su vez, una
+secuencia de instrucciones donde apareciera cobegin y así conseguir una
+jerarquía de procesos.
+
+Las corrutinas son como subrutinas, salvo que permite el paso explícito de
+control entre ellas de una forma simetrica en vez de estrictamente jerárquica.
+El contro se transfiere de una corrutina a otra mediante una sentencia reanuda
+que incluye el nombre de la corrutina con la que se continúa. Cuando una
+corrutina realiza una reanudación deja de ejecutarse, pero guarda información
+del estado local, de forma que si, posteriormente otra corrutina la hace
+reanudar podrá retomar su ejecución.
+
+Seguridad, fiabilidad y confiabilidad
+-------------------------------------
+
+*En el contexto de la fiabilidad y tolerancia a fallos, describa y compare los
+terminos: Seguridad, fiabilidad y confiabilidad(Safety, Reliability and
+Dependibility)*
+
+La seguridad software se considera a menudo en términos de percances. Un
+percance es un evento no planeado o secuencias de eventos que pueden producir
+muerte, lesión, enfermedad laboral, daño de equipos o propiedades o nocividad en
+el medio ambiente. Aunque la fiabilidad y la seguridad suelen considerarse como
+sinónimos, existe una diferencia en el énfasis. La fiabilidad ha sido definida
+como la medida del éxisto con el cual un sistema se ajusta a la especificación
+de su comportamiento. La fiabilidad ha sido definida como la medida del éxito
+con el cual un sistema se ajusta a la especificación de su comportamiento. Esto
+se expresa habitualmente en términos de probabilidad. La seguridad, sin embargo,
+es la improbabilidad de que se den las condiciones que conducen al percance,
+independientemente de si realiza la función prevista. Estas dos definiciones
+pueden entrar en conflicto.
+
+De la misma manera que sucede con la fiabilidad, para cumplir con los requisitos
+de seguridad de un sistema embebido se debe realizar un análisis de seguridad a
+largo de todas las etapas de desarrollo de su ciclo de vida.
+
+La noción de confiabilidad de un sistema es la propiedad del sistema que permite
+calificar, justificadamente, como fiable al servicio que proporciona. La
+confiabilidad por lo tanto incluye como casos especiales las nociones de
+fiabilidad y seguridad.
