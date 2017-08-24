@@ -475,3 +475,136 @@ La noción de confiabilidad de un sistema es la propiedad del sistema que permit
 calificar, justificadamente, como fiable al servicio que proporciona. La
 confiabilidad por lo tanto incluye como casos especiales las nociones de
 fiabilidad y seguridad.
+
+Modelos abstractos de manejo de dispositivos
+--------------------------------------------
+
+*Describa los modelos abstractos de manejo de dispositivos*
+
+Un dispositivo puede verse como un procesador que efectúa cierta tarea
+establecida, por lo que el sistema informático aparece como compuesto de varios
+procesos paralelos. Existen diversos modelos con los cuales el "proceso" del
+dispositivo podrá comunicarse y sincronizarse con los procesos en ejecución en
+el procesador principal. Todos ellos deben proporcionar:
+
+1. Mecanismos para la representación, direccionamiento y manipulación de los
+   registros de los dispositivos.
+   Cada registro del dispositivo puede representarse como una variable del
+   programa, un objeto, o incluso un canal de comunicación.
+2. Una representación adecuada de las interrupciones.
+
+En ella, se pueden encontrar diversas representaciones:
+
+* Procedimiento: Se contempla la interrupción como una llamada a un
+  procedimiento (en cierto sentido, es un procedimiento remoto invocado por el
+  proceso del dispositivo). Cada comunicación y sincronización requerida deberá
+  ser programada en el procedimiento de manejo de interrupción. El procedimiento
+  no es anidado: solo podrá accederse al estado global o al estado local de
+  manejador.
+* Proceso esporádico: Se ve la interrupción como una petición de ejecución de
+  cierto proceso. El manejador es un proceso esporádico, y puede acceder tanto a
+  los datos persistenes locales como a los globales (si se dispone de un
+  mecanismo de comunicación por variables compartidas en el modelo de
+  concurrencia).
+* Notificación asíncrona: Se ve la interrupción como una notificación asíncrona
+  dirigida hacia un proceso. El manejador podrá acceder tanto al estado local
+  del proceso como al estado global. Son posibles tanto el modelo de reanudación
+  como el de terminación.
+* Sincronización por variable de condición compartida: Se contempla la
+  interrupción como una sincronización de condición dentro de un mecanismo de
+  sincronización por variable compartida; por ejemplo, una operación de señal
+  sobre un semáforo o una operación envía sobre una variable de condición en un
+  monito. El manejador podrá acceder tanto al estado local del proceso/monitor
+  como al estado global.
+* Sincronización basada en mensajes: se contempla la interrupción como un
+  mensaje vacío enviado por un canal de comunicación.
+
+El proceso receptor podra acceder al estado local del proceso.
+
+Todas las posibilidades anteriores, excepto la aproximación procedimental,
+precisan de un cambio de contexto completo al ejecutar el manejador en presencia
+de un proceso. Si los manejadores cumplen ciertas restricciones, puede
+optimizarse el procedimiento. Por ejemplo, si el manejador en un modelo de
+notificación asíncrona presenta una semántica de reanudación y no accede a
+ningún dato local al proceso, bastaría un cambio parcial de contexto para
+manejar la interrupción.
+
+Modelo sincronización de procesos
+---------------------------------
+
+*Describa la clasificación del modelo de sincronización de procesos por la
+semántica de la operación envía*
+
+En cualquier sistema basado en mensajes, un receptor no puede recibir un mensaje
+antes de que el emisor lo envie. Con las variables compartidas, un lector no
+sabe si el escritor ha dejado un valor en ella.
+
+Podemos tener variaciones en el modelo de sincronización de procesos,
+clasificandose así:
+
+* Asíncrona: El emisor continúa independientemente del éxisto o fracaso del
+  envio.
+* Síncrona: El emisor continúa una vez recibido el mensaje por el receptor.
+* Invocación remota: El emisor continúa cuando el receptor devuelve una
+  respuesta.
+
+Se pueden usar dos eventos asíncronos para crear una relación síncrona y usar
+dos comunicaciones síncronas para construir una invocación remota.
+
+El primero de estos dos casos tiene sus desventajas, como que se necesitan
+infinitos buffers para almacenar os mensajes no leídos (el receptor puede haber
+terminado). Además, la mayoría de envíos se programan para esperar un
+reconocimiento, se necesitan más comunicaciones con el método asíncrono (más
+complejidad) y es más difícil probar la corrección del sistema completo.
+
+Mecanismos de control de E/S
+----------------------------
+
+Hay dos tipos de mecanismos para efectuar y controlar la E/S:
+
+* Mecanismos de control dirigido por estatus.
+* Mecanismos de control dirigido por interrupción.
+
+**Dirigido por estatus:**
+
+Cada programa realiza comprobaciones explícitas para terminar el estatus de un
+dispositivo dado. Una vez determinado el estatus del dispositio, el programa
+podrá realizar las acciones pertinantes. Hay tres clases de instrucciones
+hardware para este tipo de mecanismo:
+
+* Operaciones de test, que permiten al programa determinar el estatus de un
+  dispositivo dado
+* Operaciones de control, que indican al dispositivo que realice operaciones no
+  relacionadas con transferencias (p.ej. posicionar las cabezas de lectura de un
+  disco)
+* Operaciones de E/S, que realizan la transferencia real de los datos entre el
+  dispositivo y la UCP
+
+**Dirigidos por interrupción:**
+
+Incluso con el mecanismo dirigido por interrupción hay muchas variaciones
+posibles, dependiendo de cómo deban iniciarse y controlarse las transferencias.
+Tres variantes de este mecanismo son:
+
+* Controlado por programa
+* Iniciado por programa
+* Controlado por programa de canal
+
+Interbloqueos
+-------------
+
+*Describa las condiciones necesarias para que se produzca un interbloqueo*
+
+Hay cuatro condiciones necesarias que se deben dar para que ocurra interbloqueo:
+
+* **Exclusión mutua:** sólo un proceso puede utilizar un recurso al mismo tiempo
+  (es decir, el recurso no se puede compartir o está limitado su acceso
+  concurrente).
+* **Mantenimiento y espera:** debe haber procesos que mantengan recursos
+  mientras esperan por otros.
+* **No desalojo (no apropiación):** un recurso sólo puede ser liberado por un
+  proceso voluntariamente.
+* **Espera circular**: debe existir una cadena circular de procesos, de forma
+  que cada proceso mantenga recursos que son solicitados por el siguiente
+  proceso en la cadena.
+
