@@ -79,18 +79,18 @@ ocurrencia de enventos, como en las siguientes:
 
 * *Recuperacion de errores*
   Cuando hay grupos de procesos que realizan acciones atómicas, la detección de
-  un error en un proceso necesita de la participación del resto de procesos en la 
-  recuperación. Por ejemplo, un fallo hardware puede suponer que el proceso nunca
-  termine su ejecución prevista porque las condiciones de comienzo ya no se
-  cumplen; el proceso puede que nunca alcance su punto de sondeo. También podría
-  ocurrir un fallo de temporización, por lo que no se podría cumplir el plazo
-  límite de su servicio. En estas situaciones el proceso debe ser informado de
-  que ha sido detectado un error y de que debe efectuar alguna forma de
-  recuperación de error lo más rápidamente posible.
+  un error en un proceso necesita de la participación del resto de procesos en
+  la recuperación. Por ejemplo, un fallo hardware puede suponer que el proceso
+  nunca termine su ejecución prevista porque las condiciones de comienzo ya no
+  se cumplen; el proceso puede que nunca alcance su punto de sondeo. También
+  podría ocurrir un fallo de temporización, por lo que no se podría cumplir el
+  plazo límite de su servicio. En estas situaciones el proceso debe ser
+  informado de que ha sido detectado un error y de que debe efectuar alguna
+  forma de recuperación de error lo más rápidamente posible.
 * *Cambios de modo*
-  Los sistemas de tiempo real normalmente tienen distintos modos de operacion. En
-  ocasiones habrá cambios de modo, y estos deben ser gestionados en puntos bien
-  definidos de la ejecución del sistema. Sin embargo, en algunas áreas de
+  Los sistemas de tiempo real normalmente tienen distintos modos de operacion.
+  En ocasiones habrá cambios de modo, y estos deben ser gestionados en puntos
+  bien definidos de la ejecución del sistema. Sin embargo, en algunas áreas de
   aplicación, los cambios de modo pueden ser esperados pero no planificados. En
   estas situaciones, los procesos deben ser informados de forma rápida y segura
   de que el modo en el que estaban operando ha cambiado y deben proceder a un
@@ -116,3 +116,44 @@ sistemas operativos y la mayoría de los lenguajes de programación concurrente
 proporcionan esta disponibilidad. Sin embargo, el aborto de un proceso puede ser
 costoso y a menudo es una respuesta extrama a muchas condiciones de error.
 Consecuentemente, es necesario algún mecanismo de notificación asíncrona.
+
+Mecanismos de recuperación de errores
+-------------------------------------
+
+Mecanismos de recuperación de errores en las acciones atómicas:
+
+* Recuperación de errores hacia atrás: Si existe un error en la acción atómica
+  todas las tareas incolucradas retroceden. El mecanismo que se encarga de esta
+  recuperación se llama **conversación**
+  * Se guarda el contexto de los procesos al inicio de la conversación.
+  * La comunicación de los procesos es solo con otros procesos internos o con el
+    gestor de recursos.
+  * Para abandonar la conversación todos los procesos deben haber pasado el test
+    de aceptación.
+  * Se puede llevar a cabo la conversación aunque no esté presente alguna tarea
+    involucrada en ella.
+
+  El principal inconveniente de las conversaciones es que el error en uno de los
+  procesos produce que todos deban retroceder. Aunque tiene la ventaja de que
+  puede tomar caminos alternativos ya que se recupera el estado consistente.
+
+* Recuperación de estados hacia adelante: si se lanza una excepción en alguno de
+  los procesos de las acciones atómicas se lanza la excepción en todas.
+
+  Se presenta el problema de las excepciones concurrentes. El lanzarse dos o más
+  excepciones concurrentes no se define bien cual es el manejador que se debe
+  ejecutar.
+
+  Una posible solución es un árbol de excepciones, dónde se elige la excepción
+  raíz del subárbol que contiene todas las excepciones que se han lanzado.
+
+Otro mecanismo que permite la interacción entre las tareas y la recuperación de
+errores en las acciones atómicas es la **notificación asíncrona**. Permite que
+una tarea llame a la otra sin tener que esperar. Surgen así las dos vías de
+tratamiento de excepciones:
+
+* Reanudación (manejo de eventos): cada proceso indica las excepciones que
+  maneja. En caso de que se lanza una se avisa y se cambia el flujo de control
+  del proceso al manjeador.
+* Terminación: cada proceso determina la transferencia asíncrona de control que
+  lo puede terminar.

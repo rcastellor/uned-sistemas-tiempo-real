@@ -175,8 +175,8 @@ Existen dos tipos:
 Cuando se utilizan estos protocolos en un sistema monoprocesador se cumplen
 las siguientes propiedades:
 
-* Un proceso de alta prioridad puede ser bloqueado por procesos de prioridad baja
-  en una sola ocasión como máximo.
+* Un proceso de alta prioridad puede ser bloqueado por procesos de prioridad
+  baja en una sola ocasión como máximo.
 * Se previenen los bloqueos mutuos
 * Se previenen los bloqueos transitivos
 * Se aseguran los accesos mutuamente excluyentes a recursos
@@ -198,8 +198,8 @@ El protocolo original toma la siguiente forma:
   de los procesos que lo están utilizando
 * Un proceso tiene una prioridad dinámica que es el máximo de su prioridad
   estática y de cualquiera de las que herede debido a bloqueos
-* Un proceso sólo puede bloquear un recurso si su prioridad dinámica es mayor que
-  la cota máxima de cualquier recurso actualmente bloqueado (excluyendo los
+* Un proceso sólo puede bloquear un recurso si su prioridad dinámica es mayor
+  que la cota máxima de cualquier recurso actualmente bloqueado (excluyendo los
   bloqueados por él)
 
 Se permite el bloqueo del primer recurso del sistema. El efecto del protocolo es
