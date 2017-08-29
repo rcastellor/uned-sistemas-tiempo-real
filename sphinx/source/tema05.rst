@@ -79,8 +79,8 @@ como:
 * Los programas de prueba pueden ignorar entrelazamientos raros que rompen la
   exclusión mutua o llevan a un interbloqueo activo.
 * Los bucles de espera ocupada son ineficientes.
-* Una tarea no fiable que utilice falsamente las variables compartidas, corromperá
-  el sistema completo.
+* Una tarea no fiable que utilice falsamente las variables compartidas,
+  corromperá el sistema completo.
 
 Ningún lenguaje de programación concurrente se basa completamente en espera
 ocupada y variables compartidas, hay otros métodos y primitivas, los semáforos y
@@ -175,12 +175,37 @@ presentan los siguientes beneficios:
 * Simplifican los protocolos para la sincronización.
 * Eliminan la necesidad de bucles de espera ocupados.
 
-Un *semáforo* es una variable entera no negativa que, aparte de la inicialización,
-sólo puede ser manejada por dos procedimientos. Estos procedimientos fueron
-llamados por Dijkstra P y V, pero en estos apuntes los denominaremos *wait* y
-*signal*. La semántica de wait y signal es como sigue:
+Un *semáforo* es una variable entera no negativa que, aparte de la
+inicialización, sólo puede ser manejada por dos procedimientos. Estos
+procedimientos fueron llamados por Dijkstra P y V, pero en estos apuntes los
+denominaremos *wait* y *signal*. La semántica de wait y signal es como sigue:
 
 * wait(S) Si el valor del semáforo, S, es mayor que cero, entonces decrementa su
   valor en uno; en caso contrario, demora el proceso hasta que S sea mayor que
   cero (y entonces decrementa su valor).
-* signal(S) Incrementa el valor del semáforo, S, en uno
+* signal(S) Incrementa el valor del semáforo, S, en uno.
+
+Estas operaciones son atómicas.
+
+Regiones condicionales críticas
+-------------------------------
+
+En estas regiones se agrupan las variables protegidas y sentencias indivisibles.
+El acceso a la región condicional critica esta protegido por una variable
+booleana denominada guarda.
+
+Monitores
+---------
+
+Los monitores aparecen como mecanismos que intentan solucionar estos problemas.
+En ellos las regiones críticas se escriben como procedimientos y por tanto las
+variables protegidas estan ocultas.
+
+El programador no se debe preocupar por la exclusión mutua en la llamada de
+procedimientos de monitor ya que estas están serializadas.
+
+Existe un tipo de monitores que garantiza la indivisibilidad de las tareas
+internas de estos, el llamado **monitor de Hoore**. En el existen dos señales:
+wait y signal, la primera bloquea el proceso que la llama y la segunda libera un
+proceso de la cola de procesos bloqueados, sino existe ningún proceso en esta
+cola la llamada signal no tiene efecto.
