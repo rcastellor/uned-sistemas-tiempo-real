@@ -73,8 +73,8 @@ Diferencias en la noción de tareas en los diferentes lenguajes
 
 * Inicialización y terminación
 
-Las relaciones entrete tareas
------------------------------
+Las relaciones entre tareas
+---------------------------
 
 Las relaciones entre tareas pueden dar paso a una **jerarquía de tareas**:
 
