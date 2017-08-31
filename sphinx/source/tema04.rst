@@ -56,15 +56,21 @@ Diferencias en la noción de tareas en los diferentes lenguajes
 --------------------------------------------------------------
 
 * Estructura
+
   * Estática -> el número de tareas no varia y se conoce en tiempo de
     compilación.
   * Dinámica -> varia el número de tareas en tiempo de ejecución.
+
 * Nivel
+
   * Anidado -> las tareas se definen en cualquier nivel.
   * Plano -> todas las tareas son definidas en el mismo nivel
+
 * Granularidad
+
   * Gruesa -> pocas tareas con larga duración.
   * Fina -> muchas tareas con poca duración.
+
 * Inicialización y terminación
 
 Las relaciones entrete tareas
@@ -106,6 +112,7 @@ Mecanismos básicos para representar la ejecución concurrente
   tiempo real.
   Existen dos mecanimos principales para la declaración explicita de tareas en
   java:
+
   * Creación de hilos extendiendo a la clase **java.lang.Thread**.
-  * Implementación de la interfaz "**Runnable**" cuyo método run permite la ejecuciń
-    concurrente al ser sobreescrito.
+  * Implementación de la interfaz "**Runnable**" cuyo método run permite la
+    ejecución concurrente al ser sobreescrito.

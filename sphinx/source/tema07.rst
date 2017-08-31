@@ -125,6 +125,7 @@ Mecanismos de recuperación de errores en las acciones atómicas:
 * Recuperación de errores hacia atrás: Si existe un error en la acción atómica
   todas las tareas incolucradas retroceden. El mecanismo que se encarga de esta
   recuperación se llama **conversación**
+
   * Se guarda el contexto de los procesos al inicio de la conversación.
   * La comunicación de los procesos es solo con otros procesos internos o con el
     gestor de recursos.
